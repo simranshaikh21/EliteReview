@@ -46,6 +46,7 @@
             transition: background-color 0.5s ease, color 0.5s ease;
         }
 
+        /* Themed Glass Cards */
         .glass-card {
             background: rgba(24, 44, 39, 0.75);
             backdrop-filter: blur(16px);
@@ -59,6 +60,7 @@
             box-shadow: 0 10px 30px -10px rgba(24, 44, 39, 0.15);
         }
 
+        /* Dynamic Background for Light Mode */
         .light body {
             background: radial-gradient(circle at top right, #fdfcfb 0%, #eef2f1 100%);
         }
@@ -71,7 +73,28 @@
             background: #98b0a9;
             transition: width .3s;
         }
-        .nav-link:hover::after { width: 100%; }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #182c27; }
+        ::-webkit-scrollbar-thumb { background: #354b45; border-radius: 10px; }
+
+        .logo-text {
+            font-style: italic;
+            letter-spacing: -1px;
+        }
+
+        .redirect-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px -5px rgba(53, 75, 69, 0.2);
+        }
+        
+        .back-btn:hover {
+            background-color: rgba(152, 176, 169, 0.2);
+            transform: translateX(-4px);
+        }
 
         .product-image {
             background-size: cover;
@@ -79,18 +102,27 @@
             transition: transform 0.5s ease;
         }
         
-        .product-card:hover .product-image { transform: scale(1.1); }
+        .product-card:hover .product-image {
+            transform: scale(1.1);
+        }
+
+        /* Accent Gradients for Light Theme */
+        .light .feature-icon-box {
+            background: linear-gradient(135deg, #98b0a9 0%, #354b45 100%);
+            color: white;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-primary dark:text-white overflow-x-hidden">
 
+    <!-- Navigation -->
     <nav class="fixed w-full z-50 transition-all duration-300 glass-card py-4 border-b dark:border-white/5 border-primary/10">
         <div class="container mx-auto px-6 flex justify-between items-center">
             <div class="flex items-center space-x-2 cursor-pointer group" onclick="showPage('home')">
                 <div class="w-10 h-10 bg-accent rounded-lg flex items-center justify-center transform group-hover:rotate-0 transition-transform rotate-12 shadow-lg">
                     <i class="fas fa-star dark:text-primary text-white"></i>
                 </div>
-                <h1 class="text-2xl font-bold italic tracking-tighter">Elite<span class="text-accent">Review</span></h1>
+                <h1 class="text-2xl font-bold logo-text">Elite<span class="text-accent">Review</span></h1>
             </div>
 
             <div class="hidden md:flex space-x-8 items-center">
@@ -98,169 +130,465 @@
                 <button onclick="showPage('resources')" class="nav-link font-medium">Resources</button>
                 <button onclick="showPage('marketplace')" class="nav-link font-medium">Marketplace</button>
                 <button onclick="showPage('about')" class="nav-link font-medium">Our Story</button>
-                <button onclick="toggleTheme()" class="p-2 text-accent"><i class="fas fa-adjust"></i></button>
-                <button class="bg-primary dark:bg-accent dark:text-primary text-white px-6 py-2 rounded-full font-bold shadow-lg">Join</button>
+                <div class="h-6 w-px dark:bg-white/10 bg-primary/10 mx-2"></div>
+                <button onclick="toggleTheme()" class="p-2 rounded-full hover:bg-accent/20 transition text-accent">
+                    <i id="theme-icon" class="fas fa-moon text-xl dark:hidden"></i>
+                    <i class="fas fa-sun text-xl hidden dark:block"></i>
+                </button>
+                <button class="bg-primary dark:bg-accent dark:text-primary text-white px-6 py-2 rounded-full font-bold hover:bg-secondary dark:hover:bg-highlight transition-all active:scale-95 shadow-lg">
+                    Join Platform
+                </button>
+            </div>
+
+            <div class="md:hidden flex items-center space-x-4">
+                <button onclick="toggleTheme()"><i class="fas fa-adjust text-accent"></i></button>
+                <button onclick="toggleMenu()" class="text-2xl text-accent"><i class="fas fa-bars"></i></button>
             </div>
         </div>
     </nav>
 
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 z-[60] bg-primary dark:bg-primary hidden flex-col items-center justify-center space-y-8 text-2xl text-white">
+        <button onclick="toggleMenu()" class="absolute top-6 right-6 text-3xl">&times;</button>
+        <button onclick="showPage('home'); toggleMenu()">Home</button>
+        <button onclick="showPage('resources'); toggleMenu()">Resources</button>
+        <button onclick="showPage('marketplace'); toggleMenu()">Marketplace</button>
+        <button onclick="showPage('about'); toggleMenu()">About</button>
+    </div>
+
+    <!-- MAIN CONTENT -->
     <main id="content-area" class="pt-24">
         
+        <!-- HOME PAGE -->
         <section id="page-home" class="page-section">
             <div class="container mx-auto px-6 py-12 md:py-24 flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 space-y-6">
-                    <span class="inline-block px-4 py-1 rounded-full bg-accent/20 text-accent border border-accent/20 font-semibold text-sm">
-                        <i class="fas fa-sparkles mr-2"></i>AI-Powered Credibility
+                <div class="md:w-1/2 space-y-6 text-center md:text-left">
+                    <span class="inline-block px-4 py-1 rounded-full bg-accent/20 dark:bg-deep/40 text-secondary dark:text-accent border border-accent/20 font-semibold text-sm animate-pulse-gentle">
+                        <i class="fas fa-sparkles mr-2"></i>New: AI-Powered Credibility Scoring
                     </span>
                     <h2 class="text-5xl md:text-7xl font-extrabold leading-tight dark:text-white text-primary">
                         Evaluate. <span class="italic text-accent">Decide.</span> Succeed.
                     </h2>
-                    <p class="text-xl text-slate-500 dark:text-slate-300 max-w-lg">
-                        The ultimate data-driven marketplace for students and professionals.
+                    <p class="text-xl text-slate-600 dark:text-slate-300 max-w-lg mx-auto md:mx-0">
+                        The ultimate data-driven marketplace for students and professionals. Aggregate reviews, compare materials, and find the best resources for your career path.
                     </p>
-                    <div class="flex gap-4">
-                        <button onclick="showPage('marketplace')" class="bg-primary dark:bg-accent dark:text-primary text-white px-8 py-4 rounded-xl font-bold shadow-xl">Explore Rankings</button>
-                        <button onclick="showPage('resources')" class="border border-accent text-primary dark:text-white px-8 py-4 rounded-xl font-bold">Resources</button>
+                    <div class="flex flex-wrap justify-center md:justify-start gap-4 pt-4">
+                        <button onclick="showPage('marketplace')" class="bg-primary dark:bg-accent dark:text-primary text-white px-8 py-4 rounded-xl font-bold shadow-xl hover:shadow-primary/30 dark:hover:shadow-accent/30 transition-all flex items-center space-x-2">
+                            <span>Explore Rankings</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button onclick="showPage('resources')" class="border border-accent dark:border-accent/30 text-primary dark:text-white px-8 py-4 rounded-xl font-bold hover:bg-accent/10 transition-all">
+                            Browse Resources
+                        </button>
                     </div>
                 </div>
-                <div class="md:w-1/2 mt-12 relative">
-                    <div class="p-8 glass-card rounded-3xl animate-float border border-accent/20 shadow-2xl">
-                        <h3 class="font-bold flex items-center mb-6"><i class="fas fa-chart-line mr-2 text-accent"></i> Trending Now</h3>
+                <div class="md:w-1/2 mt-12 md:mt-0 relative">
+                    <div class="absolute -top-10 -left-10 w-48 h-48 bg-accent/30 dark:bg-deep/40 rounded-full blur-[100px]"></div>
+                    <div class="absolute -bottom-10 -right-10 w-48 h-48 bg-secondary/20 dark:bg-accent/20 rounded-full blur-[80px]"></div>
+                    
+                    <div class="relative z-10 p-8 glass-card rounded-3xl animate-float border border-accent/20 shadow-2xl">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="font-bold flex items-center dark:text-white text-primary">
+                                <i class="fas fa-chart-line mr-2 text-accent"></i>
+                                Trending Now
+                            </h3>
+                            <span class="text-[10px] bg-red-500/20 text-red-500 px-2 py-1 rounded-full font-bold animate-pulse">LIVE</span>
+                        </div>
                         <div class="space-y-4">
-                            <div class="flex items-center space-x-4 p-3 bg-accent/5 rounded-xl border border-accent/10">
-                                <div class="w-12 h-12 bg-emerald rounded-lg flex items-center justify-center font-bold text-accent">PY</div>
+                            <div class="flex items-center space-x-4 p-3 dark:bg-white/5 bg-accent/5 hover:bg-accent/10 dark:hover:bg-white/10 rounded-xl transition cursor-pointer border border-accent/10" onclick="showPage('resources')">
+                                <div class="w-12 h-12 bg-emerald rounded-lg flex items-center justify-center font-bold text-accent shadow-inner">PY</div>
                                 <div class="flex-1">
-                                    <p class="font-semibold text-sm">Advanced Python Core</p>
-                                    <div class="flex text-gold text-[10px]"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                                    <p class="font-semibold text-sm dark:text-white text-primary">Advanced Python Core</p>
+                                    <div class="flex text-gold text-[10px]">
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                                    </div>
                                 </div>
-                                <div class="text-green-500 text-xs font-bold">+12%</div>
+                                <div class="text-right">
+                                    <div class="text-green-600 dark:text-green-400 text-xs font-bold">+12%</div>
+                                    <div class="text-[10px] text-slate-500">Reviews</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="container mx-auto px-6 py-20 grid md:grid-cols-3 gap-8">
-                <div class="p-8 rounded-3xl bg-white dark:bg-secondary/20 shadow-xl border border-accent/20">
-                    <div class="w-14 h-14 bg-accent rounded-2xl flex items-center justify-center mb-6 shadow-lg"><i class="fas fa-shield-alt text-white dark:text-primary text-2xl"></i></div>
-                    <h3 class="text-2xl font-bold mb-4">Credibility Engine</h3>
-                    <p class="text-slate-500">Filters bot reviews using AI patterns.</p>
+            <!-- QUICK NAVIGATION REDIRECTS -->
+            <div class="container mx-auto px-6 py-12">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div onclick="showPage('resources')" class="redirect-card glass-card p-6 rounded-2xl cursor-pointer transition text-center group">
+                        <div class="w-12 h-12 dark:bg-secondary bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-accent transition feature-icon-box">
+                            <i class="fab fa-python text-xl text-accent dark:group-hover:text-primary group-hover:text-white"></i>
+                        </div>
+                        <h4 class="font-bold text-sm dark:text-white text-primary">Python Labs</h4>
+                    </div>
+                    <div onclick="showPage('marketplace')" class="redirect-card glass-card p-6 rounded-2xl cursor-pointer transition text-center group">
+                        <div class="w-12 h-12 dark:bg-secondary bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-accent transition feature-icon-box">
+                            <i class="fas fa-laptop text-xl text-accent dark:group-hover:text-primary group-hover:text-white"></i>
+                        </div>
+                        <h4 class="font-bold text-sm dark:text-white text-primary">Tech Gear</h4>
+                    </div>
+                    <div onclick="showPage('resources')" class="redirect-card glass-card p-6 rounded-2xl cursor-pointer transition text-center group">
+                        <div class="w-12 h-12 dark:bg-secondary bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-accent transition feature-icon-box">
+                            <i class="fas fa-book-open text-xl text-accent dark:group-hover:text-primary group-hover:text-white"></i>
+                        </div>
+                        <h4 class="font-bold text-sm dark:text-white text-primary">Study Vault</h4>
+                    </div>
+                    <div onclick="showPage('about')" class="redirect-card glass-card p-6 rounded-2xl cursor-pointer transition text-center group">
+                        <div class="w-12 h-12 dark:bg-secondary bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-accent transition feature-icon-box">
+                            <i class="fas fa-id-card text-xl text-accent dark:group-hover:text-primary group-hover:text-white"></i>
+                        </div>
+                        <h4 class="font-bold text-sm dark:text-white text-primary">Verify ID</h4>
+                    </div>
                 </div>
-                <div class="p-8 rounded-3xl bg-white dark:bg-emerald/20 shadow-xl border border-accent/20 md:translate-y-6">
-                    <div class="w-14 h-14 bg-primary rounded-2xl flex items-center justify-center mb-6 shadow-lg"><i class="fas fa-bolt text-accent text-2xl"></i></div>
-                    <h3 class="text-2xl font-bold mb-4">Real-Time Insights</h3>
-                    <p class="text-slate-500">Instant updates on product price drops.</p>
+            </div>
+
+            <!-- FEATURES GRID -->
+            <div class="container mx-auto px-6 py-20 grid md:grid-cols-3 gap-8 border-b dark:border-white/5 border-primary/5">
+                <div class="p-8 rounded-3xl dark:bg-secondary/20 bg-white shadow-xl border border-accent/20 hover:border-accent/60 transition group cursor-help">
+                    <div class="w-14 h-14 bg-accent rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-12 transition shadow-lg">
+                        <i class="fas fa-shield-alt dark:text-primary text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-primary dark:text-white">Credibility Engine</h3>
+                    <p class="text-slate-500 dark:text-slate-400">Our proprietary algorithm filters bot reviews and highlights authentic user experiences using AI patterns.</p>
                 </div>
-                <div class="p-8 rounded-3xl bg-white dark:bg-secondary/20 shadow-xl border border-accent/20">
-                    <div class="w-14 h-14 bg-accent rounded-2xl flex items-center justify-center mb-6 shadow-lg"><i class="fas fa-users text-white dark:text-primary text-2xl"></i></div>
-                    <h3 class="text-2xl font-bold mb-4">Community Driven</h3>
-                    <p class="text-slate-500">Join thousands of students sharing notes.</p>
+                <div class="p-8 rounded-3xl dark:bg-emerald/20 bg-white shadow-xl border border-accent/20 hover:border-accent/60 transition group md:translate-y-6 cursor-help">
+                    <div class="w-14 h-14 bg-primary rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-12 transition shadow-lg">
+                        <i class="fas fa-bolt text-accent text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-primary dark:text-white">Real-Time Insights</h3>
+                    <p class="text-slate-500 dark:text-slate-400">Get instant updates on product price drops and shifts in rating sentiment across multiple marketplaces.</p>
+                </div>
+                <div class="p-8 rounded-3xl dark:bg-secondary/20 bg-white shadow-xl border border-accent/20 hover:border-accent/60 transition group cursor-help">
+                    <div class="w-14 h-14 bg-accent rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-12 transition shadow-lg">
+                        <i class="fas fa-users dark:text-primary text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-primary dark:text-white">Community Driven</h3>
+                    <p class="text-slate-500 dark:text-slate-400">Join thousands of students sharing notes and honest opinions on the latest tech and study tools.</p>
+                </div>
+            </div>
+
+            <!-- SCROLL DOWN CONTENT -->
+            <div class="container mx-auto px-6 py-20 space-y-32">
+                <!-- About Us Subsection -->
+                <div class="flex flex-col md:flex-row items-center gap-16">
+                    <div class="md:w-1/2">
+                        <h2 class="text-4xl font-bold mb-6 text-primary dark:text-white">Our Mission: <span class="text-accent italic">Trust Redefined</span></h2>
+                        <p class="text-slate-500 dark:text-slate-400 text-lg leading-relaxed mb-6">
+                            EliteReview started as a small project to help classmates find reliable textbooks. Today, we've grown into a comprehensive platform that bridges the gap between marketing hype and real-world utility.
+                        </p>
+                        <p class="text-slate-500 dark:text-slate-400 text-lg leading-relaxed">
+                            We believe that every student and professional deserves access to tools that actually work. Our data scientists work tirelessly to ensure the ratings you see are backed by genuine human feedback.
+                        </p>
+                    </div>
+                    <div class="md:w-1/2 grid grid-cols-2 gap-4">
+                        <div class="glass-card p-8 rounded-3xl text-center border border-accent/30">
+                            <div class="text-4xl font-bold text-secondary dark:text-accent mb-2">50k+</div>
+                            <div class="text-xs uppercase tracking-widest text-slate-400">Active Users</div>
+                        </div>
+                        <div class="glass-card p-8 rounded-3xl text-center border border-accent/30">
+                            <div class="text-4xl font-bold text-secondary dark:text-accent mb-2">12k</div>
+                            <div class="text-xs uppercase tracking-widest text-slate-400">Verified Reviews</div>
+                        </div>
+                        <div class="glass-card p-8 rounded-3xl text-center border border-accent/30">
+                            <div class="text-4xl font-bold text-secondary dark:text-accent mb-2">98%</div>
+                            <div class="text-xs uppercase tracking-widest text-slate-400">Accuracy Rate</div>
+                        </div>
+                        <div class="glass-card p-8 rounded-3xl text-center border border-accent/30">
+                            <div class="text-4xl font-bold text-secondary dark:text-accent mb-2">24/7</div>
+                            <div class="text-xs uppercase tracking-widest text-slate-400">AI Monitoring</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Navigation Subsection -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 pt-20 border-t dark:border-white/5 border-primary/10">
+                    <div>
+                        <h4 class="font-bold mb-6 text-primary dark:text-white uppercase tracking-widest text-sm">Platform</h4>
+                        <ul class="space-y-4 text-slate-500 dark:text-slate-400">
+                            <li><button onclick="showPage('marketplace')" class="hover:text-accent transition">Marketplace</button></li>
+                            <li><button onclick="showPage('resources')" class="hover:text-accent transition">Resources</button></li>
+                            <li><button class="hover:text-accent transition">Pricing</button></li>
+                            <li><button class="hover:text-accent transition">API Access</button></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold mb-6 text-primary dark:text-white uppercase tracking-widest text-sm">Community</h4>
+                        <ul class="space-y-4 text-slate-500 dark:text-slate-400">
+                            <li><button class="hover:text-accent transition">Forums</button></li>
+                            <li><button class="hover:text-accent transition">Guidelines</button></li>
+                            <li><button class="hover:text-accent transition">Discord</button></li>
+                            <li><button class="hover:text-accent transition">Events</button></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold mb-6 text-primary dark:text-white uppercase tracking-widest text-sm">Company</h4>
+                        <ul class="space-y-4 text-slate-500 dark:text-slate-400">
+                            <li><button onclick="showPage('about')" class="hover:text-accent transition">About Us</button></li>
+                            <li><button class="hover:text-accent transition">Our Story</button></li>
+                            <li><button class="hover:text-accent transition">Careers</button></li>
+                            <li><button class="hover:text-accent transition">Contact</button></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold mb-6 text-primary dark:text-white uppercase tracking-widest text-sm">Legal</h4>
+                        <ul class="space-y-4 text-slate-500 dark:text-slate-400">
+                            <li><button class="hover:text-accent transition">Privacy Policy</button></li>
+                            <li><button class="hover:text-accent transition">Terms of Service</button></li>
+                            <li><button class="hover:text-accent transition">Cookie Policy</button></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Platform Info / Status -->
+                <div class="glass-card p-8 rounded-3xl flex flex-col md:flex-row justify-between items-center gap-6 border border-accent/20">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-3 h-3 bg-green-600 dark:bg-green-500 rounded-full animate-pulse"></div>
+                        <span class="text-sm font-medium text-slate-500 dark:text-slate-300">All systems operational: <span class="text-primary dark:text-white">v2.4.0 (Stable)</span></span>
+                    </div>
+                    <div class="flex space-x-6 text-slate-400">
+                        <i class="fab fa-twitter hover:text-accent cursor-pointer transition"></i>
+                        <i class="fab fa-github hover:text-accent cursor-pointer transition"></i>
+                        <i class="fab fa-linkedin hover:text-accent cursor-pointer transition"></i>
+                        <i class="fab fa-instagram hover:text-accent cursor-pointer transition"></i>
+                    </div>
                 </div>
             </div>
         </section>
 
+        <!-- RESOURCES PAGE -->
         <section id="page-resources" class="page-section hidden">
             <div class="container mx-auto px-6 py-12">
-                <button onclick="showPage('home')" class="mb-8 text-accent font-bold flex items-center gap-2"><i class="fas fa-arrow-left"></i> Back</button>
-                <h2 class="text-4xl font-extrabold mb-12 border-l-4 border-accent pl-6">Learning <span class="italic text-accent">Pathways</span></h2>
+                <button onclick="showPage('home')" class="back-btn mb-8 flex items-center space-x-3 text-accent font-bold transition-all px-4 py-2 rounded-xl border border-accent/20">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Home</span>
+                </button>
+                <h2 class="text-4xl font-extrabold mb-12 border-l-4 border-accent pl-6 dark:text-white text-primary">Curated <span class="italic font-normal">Learning Pathways</span></h2>
+                
+                <!-- RESTORED CATEGORIES GRID -->
                 <div class="grid md:grid-cols-3 gap-12">
                     <div class="space-y-6">
-                        <h3 class="text-2xl font-bold text-accent"><i class="fab fa-python mr-2"></i> Tech Mastery</h3>
-                        <div class="glass-card p-6 rounded-2xl border-l-4 border-accent">
-                            <p class="font-bold">Python Data Science</p>
-                            <p class="text-xs text-slate-500">Pandas, NumPy, and Scikit-Learn fundamentals.</p>
-                        </div>
-                        <div class="glass-card p-6 rounded-2xl border-l-4 border-accent/50">
-                            <p class="font-bold">Artificial Intelligence</p>
-                            <p class="text-xs text-slate-500">Neural Networks and Deep Learning.</p>
-                        </div>
-                    </div>
-                    <div class="space-y-6">
-                        <h3 class="text-2xl font-bold text-accent"><i class="fas fa-graduation-cap mr-2"></i> Academic</h3>
-                        <div class="glass-card p-6 rounded-2xl border-l-4 border-gold">
-                            <p class="font-bold">Oxford Mathematics</p>
-                            <p class="text-xs text-slate-500">Pure Math modules for undergraduate level.</p>
-                        </div>
-                        <div class="glass-card p-6 rounded-2xl border-l-4 border-gold/50">
-                            <p class="font-bold">MIT Physics (8.01)</p>
-                            <p class="text-xs text-slate-500">Classical Mechanics lecture series notes.</p>
+                        <h3 class="text-2xl font-bold flex items-center text-accent"><i class="fab fa-python mr-3"></i> Tech Mastery</h3>
+                        <div class="space-y-4">
+                            <div class="glass-card p-6 rounded-2xl border-l-4 border-accent hover:translate-x-2 transition cursor-pointer">
+                                <p class="font-bold dark:text-white text-primary mb-1">Python Data Science</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">Pandas, NumPy, and Scikit-Learn fundamentals.</p>
+                            </div>
+                            <div class="glass-card p-6 rounded-2xl border-l-4 border-accent/50 hover:translate-x-2 transition cursor-pointer">
+                                <p class="font-bold dark:text-white text-primary mb-1">Artificial Intelligence</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">Neural Networks and Deep Learning architectures.</p>
+                            </div>
+                            <div class="glass-card p-6 rounded-2xl border-l-4 border-accent/30 hover:translate-x-2 transition cursor-pointer">
+                                <p class="font-bold dark:text-white text-primary mb-1">Cloud Architecture</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">AWS and Azure Scalability best practices.</p>
+                            </div>
                         </div>
                     </div>
                     <div class="space-y-6">
-                        <h3 class="text-2xl font-bold text-accent"><i class="fas fa-vault mr-2"></i> Study Vault</h3>
-                        <div class="bg-white/10 p-6 rounded-2xl border border-accent/20">
-                            <p class="font-bold">Open Source Notes</p>
-                            <p class="text-xs text-slate-500">Access verified notes from MIT & Stanford.</p>
+                        <h3 class="text-2xl font-bold flex items-center text-accent"><i class="fas fa-square-root-alt mr-3"></i> Academic</h3>
+                        <div class="space-y-4">
+                            <div class="glass-card p-6 rounded-2xl border-l-4 border-gold hover:translate-x-2 transition cursor-pointer">
+                                <p class="font-bold dark:text-white text-primary mb-1">Oxford Mathematics</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">Pure Math modules for undergraduate level.</p>
+                            </div>
+                            <div class="glass-card p-6 rounded-2xl border-l-4 border-gold/50 hover:translate-x-2 transition cursor-pointer">
+                                <p class="font-bold dark:text-white text-primary mb-1">MIT Physics (Classical)</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">8.01 Mechanics lecture series notes.</p>
+                            </div>
+                            <div class="glass-card p-6 rounded-2xl border-l-4 border-gold/30 hover:translate-x-2 transition cursor-pointer">
+                                <p class="font-bold dark:text-white text-primary mb-1">Stanford Bio-Tech</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">Molecular biology and genetic engineering.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-6">
+                        <h3 class="text-2xl font-bold flex items-center text-accent"><i class="fab fa-youtube mr-3"></i> Creators</h3>
+                        <div class="space-y-4">
+                            <div class="dark:bg-deep/20 bg-white border border-accent/30 p-6 rounded-2xl hover:bg-accent/10 transition cursor-pointer group shadow-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-bold dark:text-white text-primary">Veritasium</span>
+                                    <i class="fas fa-external-link-alt text-[10px] text-accent group-hover:scale-110 transition"></i>
+                                </div>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 italic">Scientific concepts explained through inquiry.</p>
+                            </div>
+                            <div class="dark:bg-deep/20 bg-white border border-accent/30 p-6 rounded-2xl hover:bg-accent/10 transition cursor-pointer group shadow-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-bold dark:text-white text-primary">3Blue1Brown</span>
+                                    <i class="fas fa-external-link-alt text-[10px] text-accent group-hover:scale-110 transition"></i>
+                                </div>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 italic">Visualizing math through animation.</p>
+                            </div>
+                            <div class="dark:bg-deep/20 bg-white border border-accent/30 p-6 rounded-2xl hover:bg-accent/10 transition cursor-pointer group shadow-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-bold dark:text-white text-primary">Fireship</span>
+                                    <i class="fas fa-external-link-alt text-[10px] text-accent group-hover:scale-110 transition"></i>
+                                </div>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 italic">High-speed development tutorials.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STUDY VAULT SECTION -->
+                <div class="mt-20 glass-card p-12 rounded-3xl text-center border-2 border-accent/20">
+                    <h3 class="text-3xl font-bold mb-6 italic dark:text-white text-primary">Open Source Study Vault</h3>
+                    <p class="mb-8 text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">Access verified notes from top-performing students at Oxford, MIT, and Stanford.</p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div class="p-6 bg-white/40 dark:bg-white/5 rounded-2xl border border-accent/20 hover:border-accent hover:bg-accent/5 cursor-pointer transition shadow-sm">
+                            <i class="far fa-file-pdf text-4xl mb-4 text-accent"></i>
+                            <p class="font-bold dark:text-white text-primary">Calculus II</p>
+                        </div>
+                        <div class="p-6 bg-white/40 dark:bg-white/5 rounded-2xl border border-accent/20 hover:border-accent hover:bg-accent/5 cursor-pointer transition shadow-sm">
+                            <i class="far fa-file-code text-4xl mb-4 text-accent"></i>
+                            <p class="font-bold dark:text-white text-primary">React Hooks</p>
+                        </div>
+                        <div class="p-6 bg-white/40 dark:bg-white/5 rounded-2xl border border-accent/20 hover:border-accent hover:bg-accent/5 cursor-pointer transition shadow-sm">
+                            <i class="far fa-file-powerpoint text-4xl mb-4 text-accent"></i>
+                            <p class="font-bold dark:text-white text-primary">AI Ethics</p>
+                        </div>
+                        <div class="p-6 bg-white/40 dark:bg-white/5 rounded-2xl border border-accent/20 hover:border-accent hover:bg-accent/5 cursor-pointer transition shadow-sm">
+                            <i class="far fa-file-word text-4xl mb-4 text-accent"></i>
+                            <p class="font-bold dark:text-white text-primary">Psych 101</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- MARKETPLACE PAGE -->
         <section id="page-marketplace" class="page-section hidden">
             <div class="container mx-auto px-6 py-12">
-                <button onclick="showPage('home')" class="mb-8 text-accent font-bold flex items-center gap-2"><i class="fas fa-arrow-left"></i> Back</button>
-                <h2 class="text-4xl font-extrabold mb-12">Marketplace <span class="italic text-accent">Evaluations</span></h2>
-                <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"></div>
+                <button onclick="showPage('home')" class="back-btn mb-8 flex items-center space-x-3 text-accent font-bold transition-all px-4 py-2 rounded-xl border border-accent/20">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Home</span>
+                </button>
+
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 space-y-6 md:space-y-0">
+                    <div>
+                        <h2 class="text-4xl font-extrabold text-primary dark:text-white">Marketplace <span class="italic text-accent">Evaluations</span></h2>
+                        <p class="text-slate-500 dark:text-slate-400 mt-2">Aggregated data from Global Marketplace Platforms.</p>
+                    </div>
+                    <div class="flex space-x-2 dark:bg-white/5 bg-accent/10 p-1 rounded-xl w-full md:w-auto overflow-x-auto shadow-inner">
+                        <button onclick="filterMarketplace('trending', this)" class="filter-btn active whitespace-nowrap px-4 py-2 rounded-lg font-bold text-sm bg-accent text-primary transition shadow-md">Trending</button>
+                        <button onclick="filterMarketplace('rated', this)" class="filter-btn whitespace-nowrap px-4 py-2 rounded-lg font-bold text-sm bg-secondary text-accent hover:bg-accent/20 transition">Top Rated</button>
+                        <button onclick="filterMarketplace('price', this)" class="filter-btn whitespace-nowrap px-4 py-2 rounded-lg font-bold text-sm bg-secondary text-accent hover:bg-accent/20 transition">Price Drop</button>
+                    </div>
+                </div>
+
+                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Products injected via JS -->
+                </div>
             </div>
         </section>
 
+        <!-- ABOUT PAGE -->
         <section id="page-about" class="page-section hidden">
             <div class="container mx-auto px-6 py-12 max-w-4xl text-center">
-                <button onclick="showPage('home')" class="mb-8 text-accent font-bold mx-auto flex items-center gap-2"><i class="fas fa-arrow-left"></i> Back</button>
-                <h2 class="text-5xl font-extrabold mb-8">Empowering <span class="text-accent italic">Decision Makers</span></h2>
-                <div class="glass-card p-10 rounded-[3rem] text-left border border-accent/40">
-                    <p class="text-xl leading-relaxed text-slate-500">EliteReview provides <span class="text-primary dark:text-white font-bold">Truth in Shopping.</span> We analyze reviews to create a "Trust Quotient" for every product. Our platform aggregates data using NLP to detect bias and sponsored content.</p>
+                <button onclick="showPage('home')" class="back-btn mb-12 flex items-center space-x-3 text-accent font-bold transition-all px-4 py-2 rounded-xl border border-accent/20 mx-auto w-fit">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Home</span>
+                </button>
+                <h2 class="text-5xl font-extrabold mb-8 text-primary dark:text-white">Empowering <span class="text-accent italic">Decision Makers</span></h2>
+                <div class="space-y-6 text-xl text-slate-500 dark:text-slate-400 leading-relaxed text-left glass-card p-10 rounded-[3rem] border border-accent/40 shadow-xl">
+                    <p>EliteReview was born to provide <span class="text-primary dark:text-white font-bold">Truth in Shopping.</span> We analyze reviews to create a "Trust Quotient" for every product.</p>
+                    <p>Our platform aggregates data from thousands of sources, using advanced Natural Language Processing to detect bias, sponsored content, and authentic user satisfaction levels.</p>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="dark:bg-primary py-20 border-t border-white/5">
-        <div class="container mx-auto px-6 text-center text-slate-500">
-            <h1 class="text-xl font-bold text-white mb-4">EliteReview</h1>
-            <p>&copy; 2024 EliteReview. All Rights Reserved.</p>
+    <!-- FLOATING CONTACT BUTTON -->
+    <button onclick="toggleContact()" class="fixed bottom-10 right-10 w-16 h-16 bg-primary dark:bg-accent text-white dark:text-primary rounded-full shadow-2xl flex items-center justify-center animate-bounce-slow z-50 hover:scale-110 transition group">
+        <i class="fas fa-comment-dots text-2xl group-hover:rotate-12 transition"></i>
+    </button>
+
+    <!-- CONTACT MODAL -->
+    <div id="contact-modal" class="fixed inset-0 z-[100] bg-primary/90 hidden items-center justify-center p-6 backdrop-blur-sm">
+        <div class="bg-emerald border border-accent/30 w-full max-w-lg rounded-[2rem] p-10 relative shadow-2xl text-white">
+            <button onclick="toggleContact()" class="absolute top-6 right-6 text-3xl text-accent">&times;</button>
+            <h3 class="text-3xl font-bold mb-8">Let's <span class="italic text-accent">Collaborate</span></h3>
+            <form class="space-y-4">
+                <input type="text" placeholder="Full Name" class="w-full bg-primary/50 border border-white/10 rounded-2xl px-5 py-4 outline-none text-white">
+                <button type="button" onclick="toggleContact()" class="w-full bg-accent text-primary font-black py-4 rounded-2xl">Send</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="dark:bg-primary bg-primary py-20 border-t dark:border-white/5 border-primary/10">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="text-white text-center md:text-left">
+                <h1 class="text-xl font-bold logo-text uppercase tracking-widest mb-4">EliteReview</h1>
+                <p class="text-slate-400 max-w-sm">Helping you navigate the digital marketplace with data-driven confidence.</p>
+            </div>
+            <div class="text-slate-500 text-sm">
+                &copy; 2024 EliteReview Platform. All Rights Reserved.
+            </div>
         </div>
     </footer>
 
     <script>
+        // PRODUCT DATA
         const products = [
-            { name: "ML Engineering", category: "COURSES", score: 8.4, img: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800", desc: "High career placement rate confirmed." },
-            { name: "Sony WH-1000XM5", category: "AUDIO", score: 9.6, img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800", desc: "Industry-leading noise cancellation." },
-            { name: "iPad Pro M4", category: "TABLETS", score: 9.2, img: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=800", desc: "Ultimate paperless student device." },
-            { name: "Aeron Chair", category: "FURNITURE", score: 8.9, img: "https://images.unsplash.com/photo-1592078615290-033ee584e267?w=800", desc: "Prevents fatigue during study." },
-            { name: "Keychron Q1", category: "PERIPHERALS", score: 9.4, img: "https://images.unsplash.com/photo-1595225476474-87563907a212?w=800", desc: "Mechanical switches for engineers." },
-            { name: "Dell XPS 15", category: "LAPTOPS", score: 8.7, img: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=800", desc: "Stunning display for creators." },
-            { name: "Logitech MX 3S", category: "PERIPHERALS", score: 9.5, img: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=800", desc: "Ergonomic design for efficiency." },
-            { name: "Python Bootcamp", category: "COURSES", score: 9.1, img: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=800", desc: "Zero to Hero verified track." }
+            { id: 2, name: "ML Engineering", category: "COURSES", score: 8.4, trending: true, rated: false, priceDrop: true, img: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop", desc: "High career placement rate confirmed by verified alumni reports." },
+            { id: 3, name: "Sony WH-1000XM5", category: "AUDIO", score: 9.6, trending: true, rated: true, priceDrop: false, img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=800&auto=format&fit=crop", desc: "Industry-leading noise cancellation. Essential for deep work." },
+            { id: 4, name: "iPad Pro M4", category: "TABLETS", score: 9.2, trending: true, rated: true, priceDrop: true, img: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?q=80&w=800&auto=format&fit=crop", desc: "OLED display. The ultimate paperless student device." },
+            { id: 5, name: "Aeron Chair", category: "FURNITURE", score: 8.9, trending: false, rated: false, priceDrop: true, img: "https://images.unsplash.com/photo-1592078615290-033ee584e267?q=80&w=800&auto=format&fit=crop", desc: "Pellicle suspension prevents fatigue during study marathons." },
+            { id: 6, name: "Keychron Q1", category: "PERIPHERALS", score: 9.4, trending: false, rated: true, priceDrop: false, img: "https://images.unsplash.com/photo-1595225476474-87563907a212?q=80&w=800&auto=format&fit=crop", desc: "Premium typing experience with hot-swappable mechanical switches." },
+            { id: 7, name: "Dell XPS 15", category: "LAPTOPS", score: 8.7, trending: false, rated: false, priceDrop: true, img: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?q=80&w=800&auto=format&fit=crop", desc: "Stunning OLED display for content creators and engineers." },
+            { id: 8, name: "Logitech MX 3S", category: "PERIPHERALS", score: 9.5, trending: true, rated: true, priceDrop: false, img: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?q=80&w=800&auto=format&fit=crop", desc: "MagSpeed scrolling and ergonomic design for workflow efficiency." }
         ];
 
-        function renderProducts(list) {
+        function renderProducts(filteredList) {
             const grid = document.getElementById('product-grid');
-            grid.innerHTML = list.map(p => `
-                <div class="product-card glass-card rounded-3xl overflow-hidden border dark:border-white/5 border-accent/20">
-                    <div class="h-48 product-image" style="background-image: url('${p.img}')"></div>
+            grid.innerHTML = filteredList.map(p => `
+                <div class="product-card glass-card rounded-3xl overflow-hidden hover:scale-[1.02] transition-all border dark:border-white/5 border-accent/20 group shadow-lg">
+                    <div class="h-56 relative overflow-hidden bg-slate-800">
+                        <div class="absolute inset-0 product-image" style="background-image: url('${p.img}')"></div>
+                        <div class="absolute top-4 left-4 bg-accent text-primary text-[10px] font-bold px-2 py-1 rounded-full uppercase z-10 shadow-md">${p.category}</div>
+                    </div>
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-2">
-                            <h4 class="font-bold text-lg">${p.name}</h4>
-                            <span class="text-accent font-black">${p.score}</span>
+                            <h4 class="font-bold text-lg dark:text-white text-primary">${p.name}</h4>
+                            <span class="text-accent font-black text-xl">${p.score}</span>
                         </div>
-                        <p class="text-xs text-slate-500 mb-6">${p.desc}</p>
-                        <button class="w-full bg-secondary text-accent py-3 rounded-xl font-bold hover:bg-accent hover:text-primary transition">Evaluate</button>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mb-6 leading-relaxed">${p.desc}</p>
+                        <button class="w-full bg-secondary text-accent py-3 rounded-xl font-bold hover:bg-accent dark:hover:text-primary hover:text-white transition shadow-sm">Read Evaluation</button>
                     </div>
                 </div>
             `).join('');
         }
 
+        function filterMarketplace(type, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                b.classList.remove('bg-accent', 'text-primary', 'shadow-md');
+                b.classList.add('bg-secondary', 'text-accent');
+            });
+            btn.classList.add('bg-accent', 'text-primary', 'shadow-md');
+            btn.classList.remove('bg-secondary', 'text-accent');
+            
+            let filtered;
+            if (type === 'trending') filtered = products.filter(p => p.trending);
+            if (type === 'rated') filtered = products.filter(p => p.rated);
+            if (type === 'price') filtered = products.filter(p => p.priceDrop);
+            renderProducts(filtered);
+        }
+
         function showPage(pageId) {
             document.querySelectorAll('.page-section').forEach(section => section.classList.add('hidden'));
-            document.getElementById('page-' + pageId).classList.remove('hidden');
+            const target = document.getElementById('page-' + pageId);
+            if (target) target.classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function toggleTheme() { document.documentElement.classList.toggle('dark'); }
+        function toggleTheme() { 
+            document.documentElement.classList.toggle('dark');
+        }
 
-        window.onload = () => { renderProducts(products); };
+        function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
+        function toggleContact() { document.getElementById('contact-modal').classList.toggle('hidden'); }
+
+        window.onload = () => { renderProducts(products.filter(p => p.trending)); };
     </script>
 </body>
 </html>
